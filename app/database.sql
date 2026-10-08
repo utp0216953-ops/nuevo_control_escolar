@@ -1,0 +1,34 @@
+CREATE DATABASE IF NOT EXISTS control_escolar CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE control_escolar;
+
+CREATE TABLE usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  usuario VARCHAR(50) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE alumnos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  matricula VARCHAR(20) NOT NULL UNIQUE,
+  nombre VARCHAR(80) NOT NULL,
+  apellidos VARCHAR(100) NOT NULL DEFAULT '',
+  grupo VARCHAR(20) NOT NULL DEFAULT '',
+  email VARCHAR(120) NOT NULL DEFAULT ''
+) ENGINE=InnoDB;
+
+CREATE TABLE materias (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  clave VARCHAR(20) NOT NULL UNIQUE,
+  nombre VARCHAR(100) NOT NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE calificaciones (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  alumno_id INT NOT NULL,
+  materia_id INT NOT NULL,
+  parcial TINYINT NOT NULL,
+  calificacion DECIMAL(4,2) NOT NULL,
+  UNIQUE KEY uq_cal (alumno_id, materia_id, parcial),
+  FOREIGN KEY (alumno_id) REFERENCES alumnos(id) ON DELETE CASCADE,
+  FOREIGN KEY (materia_id) REFERENCES materias(id) ON DELETE CASCADE
+) ENGINE=InnoDB;
